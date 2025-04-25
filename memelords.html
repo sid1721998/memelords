@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Brawler: Clash of the Meme Lords</title>
+    <style>
+        /* General Reset and Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 80vh; /* Make the game container stretch to fit the screen */
+        }
+
+        h1 {
+            color: #ff6347;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .battle-log {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            flex-grow: 1;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .controls button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            flex: 1 0 45%; /* Allows buttons to be flexible in width */
+            transition: background-color 0.3s ease;
+        }
+
+        .controls button:hover {
+            background-color: #ff4500;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        /* Responsive adjustments for mobile and tablets */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .controls button {
+                font-size: 14px;
+                padding: 10px 20px;
+                flex: 1 0 40%; /* Adjust buttons for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .controls button {
+                font-size: 12px;
+                padding: 8px 18px;
+                flex: 1 0 45%; /* Stack buttons and make them wider for mobile */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Text Brawler: Clash of the Meme Lords</h1>
+        <div class="battle-log" id="battle-log">
+            <p>Welcome to the Meme Lords battle arena!</p>
+        </div>
+        <div class="controls">
+            <button id="attack-btn">Attack</button>
+            <button id="defend-btn">Defend</button>
+            <button id="special-btn">Special Move</button>
+        </div>
+        <div class="status">
+            <p><strong>Your Character:</strong> <span id="your-character">Boomer Knight</span></p>
+            <p><strong>Opponent:</strong> <span id="opponent">Space Barbarian</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Characters & abilities
+        const characters = {
+            "Boomer Knight": {
+                name: "Boomer Knight",
+                abilities: ["Facebook Fury", "Fax Attack", "Boomer Rage"],
+                specialMove: "Finisher: Call Your Mom"
+            },
+            "Space Barbarian": {
+                name: "Space Barbarian",
+                abilities: ["Laser Axe", "Space Slam", "Brutal Roar"],
+                specialMove: "Finisher: Galactic Rage"
+            }
+        };
+
+        // Initializing player and opponent
+        let player = characters["Boomer Knight"];
+        let opponent = characters["Space Barbarian"];
+
+        // Get battle log and buttons
+        const battleLog = document.getElementById("battle-log");
+        const attackBtn = document.getElementById("attack-btn");
+        const defendBtn = document.getElementById("defend-btn");
+        const specialBtn = document.getElementById("special-btn");
+
+        // Initialize battle log with names
+        battleLog.innerHTML += `<p>${player.name} vs ${opponent.name}!</p>`;
+
+        // Random outcome generator for moves
+        function randomOutcome() {
+            return Math.random();
+        }
+
+        // Attack function: player attacks opponent
+        function attack() {
+            const attackSuccess = randomOutcome();
+            if (attackSuccess < 0.6) {
+                battleLog.innerHTML += `<p>${player.name} uses Facebook Fury! It hits the ${opponent.name} square in the face! 😡</p>`;
+            } else if (attackSuccess < 0.9) {
+                battleLog.innerHTML += `<p>${player.name} lands a Fax Attack, and it jams up ${opponent.name}'s technology! 📠</p>`;
+            } else {
+                battleLog.innerHTML += `<p>${player.name} tries to attack but misses with Boomer Rage! 😂</p>`;
+            }
+            updateBattleLog();
+        }
+
+        // Defend function: player defends against an attack
+        function defend() {
+            const defendSuccess = randomOutcome();
+            if (defendSuccess < 0.5) {
+                battleLog.innerHTML += `<p>${player.name} successfully blocks with the power of nostalgia! 😎</p>`;
+            } else {
+                battleLog.innerHTML += `<p>${player.name} tries to defend but gets hit by ${opponent.name}'s Laser Axe! ⚔️</p>`;
+            }
+            updateBattleLog();
+        }
+
+        // Special move function: player uses special move
+        function specialMove() {
+            battleLog.innerHTML += `<p>${player.name} uses their special move: ${player.specialMove}! 🎉</p>`;
+            updateBattleLog();
+        }
+
+        // Update battle log scroll
+        function updateBattleLog() {
+            battleLog.scrollTop = battleLog.scrollHeight;  // Keep the scroll at the bottom
+        }
+
+        // Button click event listeners
+        attackBtn.addEventListener("click", attack);
+        defendBtn.addEventListener("click", defend);
+        specialBtn.addEventListener("click", specialMove);
+    </script>
+</body>
+</html>
